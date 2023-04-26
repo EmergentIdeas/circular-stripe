@@ -312,6 +312,12 @@ class CircularStripe {
 			this.stripeElementHolder.dispatchEvent(evt)
 		}
 	}
+	
+	_getCenterPosition() {
+		let se = this.stripeElement;
+		let stripeWidth = se.offsetWidth
+		return se.scrollLeft + (stripeWidth / 2)
+	}
 
 	/**
 	 * Returns the item currently under the center line of the .circular-stripe element.
@@ -323,7 +329,7 @@ class CircularStripe {
 		let se = this.stripeElement;
 		let stripeWidth = se.offsetWidth
 
-		let centerPosition = se.scrollLeft + (stripeWidth / 2)
+		let centerPosition = this._getCenterPosition()
 
 		let count = 0
 		for (let el of this.mover.children) {
@@ -353,21 +359,18 @@ class CircularStripe {
 	 */
 	_getBalance() {
 		this._resizeMover()
-		let se = this.stripeElement;
-		let stripeWidth = se.offsetWidth
 
-		let leftPosition = se.scrollLeft
-		let rightPosition = se.scrollLeft + stripeWidth
+		let centerPosition = this._getCenterPosition()
 		let balance = 0
 
 		for (let el of this.mover.children) {
 			let childOffset = el.offsetLeft
 			let childWidth = el.offsetWidth
 
-			if ((childOffset + childWidth) < leftPosition) {
+			if ((childOffset + childWidth) < centerPosition) {
 				balance--
 			}
-			if (childOffset > rightPosition) {
+			if (childOffset > centerPosition) {
 				balance++
 			}
 		}

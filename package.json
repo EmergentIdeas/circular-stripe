@@ -1,6 +1,6 @@
 {
 	"name": "@dankolz/circular-stripe",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Creates a circular stripe, sort of a coursel, that rotates items according to user scroll and button clicks.",
 	"main": "client-js/circular-stripe.js",
 	"scripts": {
