@@ -1,22 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-window.require = require
-
-let tri = require('tripartite')
-
-
-// load templates like
-//require('../views/test1.tri')
-
-// and use like:
-/*
-let d = document.createElement('div')
-d.innerHTML = tri.getTemplate('views/test1')({
-	key1: 'value'
-	, key2: 'value'
-})
-document.body.append(d)
-*/
-
 
 let positionAttributeName = 'data-original-position'
 
@@ -363,6 +345,29 @@ class CircularStripe {
 
 }
 
+if(module) {
+	module.exports = CircularStripe
+}
+},{}],2:[function(require,module,exports){
+window.require = require
+
+let tri = require('tripartite')
+
+
+// load templates like
+//require('../views/test1.tri')
+
+// and use like:
+/*
+let d = document.createElement('div')
+d.innerHTML = tri.getTemplate('views/test1')({
+	key1: 'value'
+	, key2: 'value'
+})
+document.body.append(d)
+*/
+
+const CircularStripe = require('./circular-stripe')
 window.addEventListener("load", function () {
 	let cs
 	let stripes = document.getElementsByClassName('circular-stripe-holder')
@@ -381,7 +386,7 @@ window.addEventListener("load", function () {
 
 
 
-},{"tripartite":4}],2:[function(require,module,exports){
+},{"./circular-stripe":1,"tripartite":5}],3:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -567,7 +572,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var calculateRelativePath = function(parentPath, currentPath) {
 	if(!parentPath) {
 		return currentPath
@@ -616,7 +621,7 @@ var calculateRelativePath = function(parentPath, currentPath) {
 }
 
 module.exports = calculateRelativePath
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (process,global){(function (){
 
 var calculateRelativePath = require('./calculate-relative-path')
@@ -1200,5 +1205,5 @@ if(global) {
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./calculate-relative-path":3,"_process":2}]},{},[1])
+},{"./calculate-relative-path":4,"_process":3}]},{},[2])
 //# sourceMappingURL=pages.js.map

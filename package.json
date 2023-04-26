@@ -22,6 +22,10 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
+	"files": [
+		"/client-js/circular-stripe.js",
+		"/less/components.less"
+	],
 	"dependencies": {
 	},
 	"devDependencies": {
