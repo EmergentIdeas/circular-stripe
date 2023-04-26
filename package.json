@@ -1,8 +1,8 @@
 {
-	"name": "circular-stripe",
+	"name": "@dankolz/circular-stripe",
 	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"description": "Creates a circular stripe, sort of a coursel, that rotates items according to user scroll and button clicks.",
+	"main": "client-js/circular-stripe.js",
 	"scripts": {
 		"test": "node_modules/mocha/bin/mocha",
 		"bg": "parallelshell 'npm run dev-less-watch' 'npm run dev-client-js-watch'",
@@ -24,7 +24,8 @@
 	"license": "ISC",
 	"files": [
 		"/client-js/circular-stripe.js",
-		"/less/components.less"
+		"/less/components.less",
+		"/public"
 	],
 	"dependencies": {
 	},

@@ -435,9 +435,16 @@ body {
 .nowrap {
   white-space: nowrap;
 }
+.no-scroll-bars {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scroll-bars::-webkit-scrollbar {
+  width: 0 !important;
+}
 .circular-stripe {
-  overflow: auto;
   position: relative;
+  overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -445,16 +452,28 @@ body {
   width: 0 !important;
 }
 .circular-stripe .mover {
-  padding-left: 1000px;
-  padding-right: 1000px;
+  width: 4000px;
   box-sizing: border-box;
 }
 .circular-stripe .mover > * {
   display: inline-block;
 }
+.circular-stripe-holder .dots .dot {
+  display: inline-block;
+  border: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
 .circular-stripe {
   width: 600px;
   margin: auto;
   border: solid 1px black;
+}
+.circular-stripe .mover > *.current {
+  background-color: yellow;
+}
+.circular-stripe-holder .dots .dot.current {
+  background-color: green;
 }
 /*# sourceMappingURL=pages.css.map */

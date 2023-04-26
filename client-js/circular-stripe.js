@@ -1,5 +1,4 @@
 
-let positionAttributeName = 'data-original-position'
 
 class CircularStripe {
 	/**
@@ -17,13 +16,23 @@ class CircularStripe {
 	 * 	</div>
 	 * 
 	 * @param {Element} stripeElementHolder The holder of the working elements for the circular stripe
+	 * @param {Object} [options]
+	 * @param {int} [options.animationDuration=300] The length of time taken for the slide animation in milliseconds
+	 * @param {int} [options.stepSize=5] length of time taken between frames in the slide animation in milliseconds
+	 * @param {int} [options.sidePadding=1000] The number of pixels used to provide offscreen work area
+	 * @param {string} [options.positionAttributeName=data-original-position] The name of the attribute used to track the item's original position
+	 * @param {string} [options.currentClassName=current] The class added to the current item and current dot
 	 */
-	constructor(stripeElementHolder) {
+	constructor(stripeElementHolder, options) {
 
 		// Setup working properties
-		this.animationDuration = 300
-		this.stepSize = 5
-		this.sidePadding = 1000
+		Object.assign(this, {
+			animationDuration: 300
+			, stepSize: 5
+			, sidePadding: 1000
+			, positionAttributeName: 'data-original-position'
+			, currentClassName: 'current'
+		}, options)
 
 		// find possible parts
 		this.stripeElementHolder = stripeElementHolder
@@ -33,24 +42,56 @@ class CircularStripe {
 		this.previousButton = this.stripeElementHolder.querySelector('.previous')
 		this.dots = this.stripeElementHolder.querySelector('.dots')
 
+		this.mover.style.paddingLeft = this.sidePadding + 'px'
+		this.mover.style.paddingRight = this.sidePadding + 'px'
+
 		// mark the items with their original positions
 		for (let i = 0; i < this.mover.children.length; i++) {
-			this.mover.children[i].setAttribute(positionAttributeName, i)
+			this.mover.children[i].setAttribute(this.positionAttributeName, i)
 		}
 
+		this._addDots()
 		this._addEventListeners()
 	}
-	
+
+	_addDots() {
+		if (this.dots) {
+			let count = this.mover.children.length
+			for (let i = 0; i < count; i++) {
+				this.dots.innerHTML += `<button class="dot" ${this.positionAttributeName}="${i}">&nbsp;</button>`
+			}
+
+			this.dots.querySelectorAll('.dot').forEach(dot => {
+				dot.addEventListener('click', evt => {
+					let ind = evt.currentTarget.getAttribute(this.positionAttributeName)
+					// console.log(`dot clicked: ${ind}`)
+
+					let e = new Event('dotClicked')
+					e.ind = ind
+					e.dotElement = evt.currentTarget
+					for (let i = 0; i < count; i++) {
+						let child = this.mover.children[i]
+						if (child.getAttribute(this.positionAttributeName) == ind) {
+							e.itemElement = child
+							e.itemCurrentPosition = i
+						}
+					}
+					this.stripeElementHolder.dispatchEvent(e)
+				})
+			})
+		}
+	}
+
 	/**
 	 * Configures event listeners for the possible components in the stripe
 	 */
 	_addEventListeners() {
 		this.stripeElement.addEventListener('scroll', evt => {
-			window.requestAnimationFrame(() => {
-				if (!this.animating) {
+			if (!this.animating) {
+				window.requestAnimationFrame(() => {
 					this.rebalance()
-				}
-			})
+				})
+			}
 		})
 
 		if (this.nextButton) {
@@ -63,11 +104,26 @@ class CircularStripe {
 				this.centerItemToLeft()
 			})
 		}
+		
+		this.mover.addEventListener('click', evt => {
+			if(!evt.target.classList.contains('mover')) {
+				let item = evt.target.closest('.mover > *')
+				let e = new Event('itemClicked')
+				e.ind = item.getAttribute(this.positionAttributeName)
+				e.itemElement = item
+				this.stripeElementHolder.dispatchEvent(e)
+			}
+		})
 
 		this.addEventListener('center', (evt) => {
 			this._onCenterItem(evt.nextItemOriginalIndex, evt.nextItemIndex)
 		})
-		
+
+		this.addEventListener('dotClicked', (evt) => {
+			let { ind: dotIndex, dotElement, itemElement, itemCurrentPosition } = evt
+			this._onDotClicked(dotIndex, itemCurrentPosition, dotElement, itemElement)
+		})
+
 		window.addEventListener('resize', (evt) => {
 			this.rebalance()
 		})
@@ -79,6 +135,7 @@ class CircularStripe {
 	 * The available events are: 
 	 * center: an item is being explicitly centered
 	 * dotClicked: the user has clicked one of the tracking dots
+	 * itemClicked: the user has clicked one of the items
 	 * @param {string} event The event name
 	 * @param {function(evt:Event)} func A function which is passed an Event object
 	 */
@@ -90,7 +147,30 @@ class CircularStripe {
 
 	}
 
-	
+	_onDotClicked(dotIndex, itemCurrentPosition, dotElement, itemElement) {
+		this.center(itemCurrentPosition, true)
+		this.rebalance()
+	}
+
+	_remark() {
+		let centered = this.getCenterItem()
+		if (centered) {
+			this._updateCurrentStyling(centered.item.getAttribute(this.positionAttributeName), centered.ind)
+		}
+
+	}
+
+	_updateCurrentStyling(dotIndex, itemIndex) {
+		if(this.dots) {
+			[...this.dots.children].forEach(dot => dot.classList.remove(this.currentClassName))
+			this.dots.children[dotIndex].classList.add(this.currentClassName);
+		}
+
+		[...this.mover.children].forEach(item => item.classList.remove(this.currentClassName))
+		this.mover.children[itemIndex].classList.add(this.currentClassName)
+	}
+
+
 	/**
 	 * Animates the change of a property over a duration. Normally you might use
 	 * css transition to do this, but there are some properties that doesn't work
@@ -226,7 +306,7 @@ class CircularStripe {
 			}
 
 			let evt = new Event('center')
-			evt.nextItemOriginalIndex = parseInt(child.getAttribute(positionAttributeName))
+			evt.nextItemOriginalIndex = parseInt(child.getAttribute(this.positionAttributeName))
 			evt.nextItemIndex = item
 			this.stripeElementHolder.dispatchEvent(evt)
 		}
@@ -313,6 +393,7 @@ class CircularStripe {
 				this._moveFromRightToLeft()
 			}
 		}
+		this._remark()
 	}
 
 	/**
@@ -344,6 +425,6 @@ class CircularStripe {
 
 }
 
-if(module) {
+if (module) {
 	module.exports = CircularStripe
 }

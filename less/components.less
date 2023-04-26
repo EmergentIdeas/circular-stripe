@@ -1,23 +1,35 @@
-.circular-stripe {
-	overflow: auto;
-	position: relative;
-
+.no-scroll-bars {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 	&::-webkit-scrollbar {
 		// display: none;
 		width: 0 !important;
 	}
+}
+
+.circular-stripe {
+	position: relative;
+	overflow: auto;
+	.no-scroll-bars;
 
 	.mover {
-		padding-left: 1000px;
-		padding-right: 1000px;
+		width: 4000px;
 		box-sizing: border-box;
 
-		&>* {
+		& > * {
 			display: inline-block;
 		}
 	}
+}
 
-
+.circular-stripe-holder {
+	.dots {
+		.dot {
+			display: inline-block;
+			border: 0;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+		}
+	}
 }

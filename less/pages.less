@@ -8,4 +8,16 @@
 	width: 600px;
 	margin: auto;
 	border: solid 1px black;
+	.mover {
+		& > *.current {
+			background-color: yellow;
+		}
+	}
+}
+.circular-stripe-holder {
+	.dots {
+		.dot.current {
+			background-color: green;
+		}
+	}
 }
