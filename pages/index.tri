@@ -1,0 +1,6 @@
+__::start__
+<div class="page page-landing">
+	
+	__::stripe__
+</div>
+__::end__

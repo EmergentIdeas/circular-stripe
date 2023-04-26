@@ -1,0 +1,30 @@
+{
+	"title": "My Site"
+	, "icons": [
+		{
+			"img": "https://placehold.co/200"
+			, "label": "icon label 1"
+		}
+		, {
+			"img": "https://placehold.co/200"
+			, "label": "icon label 2"
+		}
+		, {
+			"img": "https://placehold.co/200"
+			, "label": "icon label 3"
+		}
+		, {
+			"img": "https://placehold.co/200"
+			, "label": "icon label 4"
+		}
+		, {
+			"img": "https://placehold.co/200"
+			, "label": "icon label 5"
+		}
+		, {
+			"img": "https://placehold.co/200"
+			, "label": "icon label 6"
+		}
+		
+	]
+}

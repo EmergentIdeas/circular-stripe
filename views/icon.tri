@@ -1,0 +1,9 @@
+<div class="icon">
+	<div class="img">
+		<img src="__img__" />	
+	</div>
+	<div class="label">
+		__label__	
+	</div>
+	
+</div>

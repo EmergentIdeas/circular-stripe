@@ -1,0 +1,10 @@
+<div class="circular-stripe-holder">
+	<div class="circular-stripe">
+		<div class="mover">
+			__page.icons::icon__
+		</div>
+	</div>
+	<button class="previous">previous</button>
+	<button class="next">next</button>
+	<div class="dots"></div>
+</div>
